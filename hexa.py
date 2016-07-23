@@ -1,122 +1,19 @@
-#!/usr/bin/env python
+
+#
+#   This program makes hexaflexagon printouts.
+#   
+#   Author: Michael Borinsky
+#   License: GPL
+#   
+#   programmed with love in 2016
+#   
 
 from math import *
 import cairo
 
-import argparse, itertools
+import argparse
 
-def drawHexaflexaOutline(ctx, a):
-
-    curpt = ctx.get_current_point()
-
-    for k in range(0, 19):
-        drawHexaFlexaTriangle( ctx, a, k, "dur" )
-
-        ctx.set_source_rgb (0.0, 0.0, 0.0)
-        ctx.set_line_width (1)
-        ctx.stroke ()
-
-        ctx.move_to(*curpt)
-
-        drawHexaFlexaTriangle( ctx, a, k, "moll" )
-
-        ctx.set_source_rgb (0.0, 0.0, 0.0)
-        ctx.set_line_width (1)
-        ctx.stroke ()
-
-        ctx.move_to(*curpt)
-
-def drawHexaFlexaPicture(ctx, a, face, ori, img):
-    curpt = ctx.get_current_point()
-
-    b = a/2
-    h = sqrt(3)/2 * a
-
-    if face < 3:
-        tune = "dur"
-    else:
-        tune = "moll"
-
-    scale1 = 2/5*1/2
-    scale2 = 1/2
-
-    width, height = img.get_width(), img.get_height()
-    grad = cairo.RadialGradient(width//2, height//2, 
-                            scale1*(width+height)//2, 
-                            width//2, height//2, 
-                            scale2*(width+height)//2)
-
-    red   = 1.0 if face     % 3 == 0 else 0.0
-    green = 1.0 if (face+1) % 3 == 0 else 0.0
-    blue  = 1.0 if (face+2) % 3 == 0 else 0.0
-
-    grad.add_color_stop_rgba( 0.2, red, green, blue, 0.3 )
-    grad.add_color_stop_rgba( 0.7, red, green, blue, 0.3 )
-    grad.add_color_stop_rgba( 1.0, red, green, blue, 0.3 )
-
-    for m in range(0,6):
-        if tune == "dur":
-            k = 1 + 3*m + face
-        else:
-            k = m%2 + 2*(face-3+3*(m//2))
-
-        trans = k%2
-
-        drawHexaFlexaTriangle(ctx, a, k, tune)
-
-        x,y = ctx.get_current_point()
-
-        ctx.save()
-        # tune X ori X major
-        matrix_translation = \
-            [ 
-                [ [ (0, 0), (-h, b) ], [ (0, -a), (-h, -b) ], [ (-h, -b), (0, 0) ] ],
-                [ [ (0, 0), (0, 0) ], [ (h, -b), (h, -b) ] ] 
-            ]
-        matrix_rot = \
-            [ 
-                [ [ -2*pi/12, 2*pi/12 ], [ -2*pi*5/12, 2*pi*5/12 ], [ 2*pi/4, -2*pi/4 ] ],
-                [ [ 2*pi/4, 2*pi/12 ], [ -2*pi/4, -2*pi*5/12 ] ]
-            ]
-
-        tunes = { "dur" : 0, "moll" : 1 }
-        oris = { "fire" : 0, "water" : 1, "earth" : 2 }
-        dx, dy = matrix_translation[tunes[tune]][oris[ori]][trans]
-        rot    = matrix_rot[tunes[tune]][oris[ori]][trans] + 2*pi/6*m + \
-                ( 2*pi/12 if tune == "dur" else -2*pi/12 ) + \
-                (-2*pi*2/3 if ori == "earth" else 0)
-
-        ctx.translate(x+dx, y+dy)
-
-        if tune == "dur" and ori == "earth":
-            ref_size = sqrt(width*height)*2*.7
-        else:
-            ref_size = min(width,height)
-        ctx.scale(2*a/ref_size, 2*a/ref_size)
-        ctx.rotate(rot)
-
-        ctx.translate(-.5*width, -.5*height)
-
-        ctx.clip()
-        ctx.set_source_surface(img)
-
-        if tune == "dur" and ori == "earth":
-            ctx.mask(grad)
-        elif tune == "dur" and ori == "water":
-            ctx.paint()
-        elif tune == "moll":
-            ctx.paint()
-
-        ctx.restore()
-
-        ctx.move_to(*curpt)
-
-
-def drawHexaFlexaTriangle(ctx, a, k, tune):
-    b = a/2
-    h = sqrt(3)/2 * a
-    num = 10
-
+def drawTriangle(ctx, a, b, h, k, tune):
     trans = k % 2 == 0
 
     ctx.rel_move_to(h, a * (k//2+1))
@@ -135,10 +32,96 @@ def drawHexaFlexaTriangle(ctx, a, k, tune):
 
     ctx.close_path()
 
+def drawOutline(ctx, a, b, h):
+    curpt = ctx.get_current_point()
+
+    for k in range(0, 19):
+        for tune in ["dur", "moll"]:
+            drawTriangle( ctx, a, b, h, k, tune )
+
+            ctx.set_source_rgb (0.0, 0.0, 0.0)
+            ctx.set_line_width (1)
+            ctx.stroke ()
+
+            ctx.move_to(*curpt)
+
+def transformToTextureSpace(ctx, a, b, h, tune, ori, trans, img_width, img_height, m):
+    translation = { "dur" : {   
+                                "stone"   : [ (0, 0), (-h, b) ], 
+                                "scissor" : [ (0, -a), (-h, -b) ], 
+                                "paper"   : [ (-h, -b), (0, 0) ] 
+                            },
+                    "moll" : {  
+                                "stone"   : [ (0, 0), (0, 0) ], 
+                                "scissor" : [ (h, -b), (h, -b) ] 
+                             }
+                  }
+
+    rotation    = { "dur" :  {  
+                                "stone"   : [ 0, 2 ],
+                                "scissor" : [ -4, 6 ],
+                                "paper"   : [ -4, 2 ],
+                             },
+                    "moll" : {  
+                                "stone"   : [ 2, 0 ], 
+                                "scissor" : [ -4, -6 ] 
+                             }
+                  }
+
+    dx, dy = translation[tune][ori][trans]
+    rot    = 2*pi/12 * ( rotation[tune][ori][trans] + 2*m )
+
+    ref_size = min(img_width, img_height)
+    scale = 2*a/ref_size
+
+    x,y = ctx.get_current_point()
+
+    ctx.translate(x+dx, y+dy)
+    ctx.scale(scale, scale)
+    ctx.rotate(rot)
+
+    ctx.translate(-.5*img_width, -.5*img_height)
+
+def drawPicture(ctx, a, b, h, face, ori, img):
+    curpt = ctx.get_current_point()
+
+    if face < 3:
+        tune = "dur"
+    else:
+        tune = "moll"
+
+    alpha = 0.4
+    img_width, img_height = img.get_width(), img.get_height()
+    pat = cairo.SolidPattern(0.0, 0.0, 0.0, alpha) 
+
+    for m in range(0,6):
+        if tune == "dur":
+            k = 1 + 3*m + face
+        elif tune == "moll":
+            k = m%2 + 2*(face-3+3*(m//2))
+
+        trans = k%2
+
+        drawTriangle(ctx, a, b, h, k, tune)
+
+        ctx.save()
+        
+        transformToTextureSpace(ctx, a, b, h, tune, ori, trans, img_width, img_height, m)
+
+        ctx.clip()
+        ctx.set_source_surface(img)
+
+        if tune == "dur" and ori == "paper":
+            ctx.mask(pat)
+        else:
+            ctx.paint()
+
+        ctx.restore()
+
+        ctx.move_to(*curpt)
+
 def main():
-    WIDTH, HEIGHT = 595, 842
- 
-    parser = argparse.ArgumentParser(description='Make a hexaflexagon with pictures hidden in it.')
+    parser = argparse.ArgumentParser(description='Make a hexaflexagon with a picture printed on each of the six faces.')
     parser.add_argument('pics', type=str, nargs='+',
                         help='Filenames to pictures (only png).')
     parser.add_argument('--output', type=str,
@@ -146,24 +129,28 @@ def main():
 
     args = parser.parse_args()
     
-    surface = cairo.PDFSurface (args.output, WIDTH, HEIGHT)
-    ctx = cairo.Context (surface)
+    WIDTH, HEIGHT = 595, 842
+    surface = cairo.PDFSurface(args.output, WIDTH, HEIGHT)
+    ctx = cairo.Context(surface)
 
-    border = 1 * 72.0 / 2.54
-    size = (HEIGHT - 2*border)/10
-    
+    border = .75 * 72.0 / 2.54
+    a = (HEIGHT - 2*border)/10
+    b = a/2
+    h = sqrt(3)/2 * a
 
-    for i in range(3):
-        ctx.move_to( border + i*(2*size), border )
+    for i in range(4):
+        ctx.move_to( border + i*(2*h), border )
 
-        commonfaces = itertools.product(range(0,3), ["water", "earth"])
-        hiddenfaces = itertools.product(range(3,6), ["water"])
+        commonfaces         = list(zip(range(0,3), ["scissor"] * 3))
+        hiddenfaces         = list(zip(range(3,6), ["scissor"] * 3))
+        transparentfaces    = list(zip(range(0,3), ["paper"]   * 3))
 
-        #for pic_fn, (face, ori) in zip(args.pics, itertools.chain(commonfaces, hiddenfaces)):
-            #img = cairo.ImageSurface.create_from_png(pic_fn)
-            #drawHexaFlexaPicture(ctx, size, face, ori, img)
+        for pic_fn, (face, ori) in zip(args.pics, commonfaces + hiddenfaces + transparentfaces):
+            img = cairo.ImageSurface.create_from_png(pic_fn)
 
-        drawHexaflexaOutline(ctx, size)
+            drawPicture(ctx, a, b, h, face, ori, img)
+
+        drawOutline(ctx, a, b, h)
 
     surface.show_page()
 
