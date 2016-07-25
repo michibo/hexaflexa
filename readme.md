@@ -9,7 +9,7 @@ If you don't know what a hexaflexagon is, I recommend this great [series of yout
 How to use the program
 ======================
 
-To run hexaflexa you need *pycairo* [LINK].
+To run hexaflexa you need [*pycairo*](https://cairographics.org/pycairo/).
 
 Run 
 
