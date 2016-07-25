@@ -1,5 +1,5 @@
 
-HEXAFLEXA
+hexaflexa
 =========
 
 Hexaflexa is a python program which makes hexaflexagon printouts, such that each face of the hexaflexagon shows a different picture. 
