@@ -138,8 +138,6 @@ def main():
     b = a/2
     h = sqrt(3)/2 * a
 
-    print(h*2*300/72)
-
     for i in range(4):
         ctx.move_to( border + i*(2*h), border )
 
