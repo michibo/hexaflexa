@@ -126,17 +126,31 @@ def main():
                         help='Filenames to pictures (only png).')
     parser.add_argument('--output', type=str,
                         help='Output filename (pdf).', default="out.pdf")
+    parser.add_argument('--paper', type=str,
+                        help='Paper size', default="A4");
 
     args = parser.parse_args()
-    
-    WIDTH, HEIGHT = 595, 842
+
+    # The units for pdf size is a point=1/72inch
+    if (args.paper.upper() == 'A4'):
+        WIDTH, HEIGHT = 595, 842
+    elif (args.paper.upper() == 'LETTER'):
+        WIDTH, HEIGHT = 612, 792
+    elif (args.paper.upper() == 'LEGAL'):
+        WIDTH, HEIGHT = 612, 1008
+    elif (args.paper.upper() == 'TABLOID'):
+        WIDTH, HEIGHT = 792, 1224
+    else:
+        print("Paper type not understood: '"+args.paper+"'")
+        sys.exit(1)
+
     surface = cairo.PDFSurface(args.output, WIDTH, HEIGHT)
     ctx = cairo.Context(surface)
 
-    border = .75 * 72.0 / 2.54
-    a = (HEIGHT - 2*border)/10
-    b = a/2
-    h = sqrt(3)/2 * a
+    border = .75 * 72.0 / 2.54   # border = 3/4cm
+    a = (HEIGHT - 2*border)/10   # eq. triangle side, we need 10 down the spine
+    b = a/2                      # half-side of eq. triangles
+    h = sqrt(3)/2 * a            # height of eq.triangles
 
     for i in range(4):
         ctx.move_to( border + i*(2*h), border )
