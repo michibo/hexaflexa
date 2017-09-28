@@ -120,6 +120,7 @@ def drawPicture(ctx, a, b, h, face, ori, img):
 
         ctx.move_to(*curpt)
 
+
 def main():
     parser = argparse.ArgumentParser(description='Make a hexaflexagon with a picture printed on each of the six faces.')
     parser.add_argument('pics', type=str, nargs='+',
@@ -151,8 +152,9 @@ def main():
     a = (HEIGHT - 2*border)/10   # eq. triangle side, we need 10 down the spine
     b = a/2                      # half-side of eq. triangles
     h = sqrt(3)/2 * a            # height of eq.triangles
+    n = int(WIDTH / (h*2));      # this is how many will fit in the paper's width
 
-    for i in range(4):
+    for i in range(n):
         ctx.move_to( border + i*(2*h), border )
 
         commonfaces         = list(zip(range(0,3), ["scissor"] * 3))
