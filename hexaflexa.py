@@ -52,8 +52,8 @@ def transformToTextureSpace(ctx, a, b, h, tune, ori, trans, img_width, img_heigh
                                 "paper"   : [ (-h, -b), (0, 0) ] 
                             },
                     "moll" : {  
-                                "stone"   : [ (0, 0), (0, 0) ], 
-                                "scissor" : [ (h, -b), (h, -b) ] 
+                                "stone"   : [ (h, -b), (h, -b) ],
+                                "scissor" : [ (h, -b), (h, -b) ]
                              }
                   }
 
@@ -63,8 +63,8 @@ def transformToTextureSpace(ctx, a, b, h, tune, ori, trans, img_width, img_heigh
                                 "paper"   : [ -4, 2 ],
                              },
                     "moll" : {  
-                                "stone"   : [ 2, 0 ], 
-                                "scissor" : [ -4, -6 ] 
+                                "stone"   : [ 0, -2 ],
+                                "scissor" : [ -4, -6 ]
                              }
                   }
 
@@ -158,7 +158,7 @@ def main():
         ctx.move_to( border + i*(2*h), border )
 
         commonfaces         = list(zip(range(0,3), ["scissor"] * 3))
-        hiddenfaces         = list(zip(range(3,6), ["scissor"] * 3))
+        hiddenfaces         = list(zip(range(3,6), ["scissor", "scissor", "stone"]))
         transparentfaces    = list(zip(range(0,3), ["paper"]   * 3))
 
         for pic_fn, (face, ori) in zip(args.pics, commonfaces + hiddenfaces + transparentfaces):
