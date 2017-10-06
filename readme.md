@@ -13,7 +13,7 @@ To run hexaflexa you need [*pycairo*](https://cairographics.org/pycairo/).
 
 Run 
 
-    python hexaflexa.py --output myhexaflexagon.pdf pic1.png pic2.png ...
+    python hexaflexa.py --output 012345.pdf 0.png 1.png 2.png 3.png 4.png 5.png
 
 You have to put in *six* different pictures or some faces will be empty. You can put in up to *nine* different pictures. The last three pictures should be watermark-images with given transparency values. 
 
