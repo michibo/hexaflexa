@@ -2,14 +2,14 @@
 hexaflexa
 =========
 
-Hexaflexa is a python program which makes hexaflexagon printouts, such that each face of the hexaflexagon shows a different picture. 
+[hexaflexa](//github.com/michibo/hexaflexa) is a simple python program which makes hexaflexagon PDF printouts, such that each face of the hexaflexagon shows a different picture. 
 
-If you don't know what a hexaflexagon is, I recommend this great [series of youtube videos by Victoria Hart](//youtu.be/VIVIegSt81k) ~~or this [website by Alejandro Kapauan](http://home.xnet.com/~aak/hexahexa.html)~~ (Alejandro Kapauan unfortunately disappeared from the internet. The main content is below.) or this [book by Martin Gardner](http://www.cambridge.org/nl/academic/subjects/mathematics/recreational-mathematics/hexaflexagons-probability-paradoxes-and-tower-hanoi-martin-gardners-first-book-mathematical-puzzles-and-games?format=PB&isbn=9780521735254). 
+If you don't know what a hexaflexagon is, I recommend this great [series of youtube videos by Victoria Hart](//youtu.be/VIVIegSt81k) ~~or this [website by Alejandro Kapauan](http://home.xnet.com/~aak/hexahexa.html)~~ (Alejandro Kapauan unfortunately disappeared from the internet. A copy of the content is below.) or this [book by Martin Gardner](http://www.cambridge.org/nl/academic/subjects/mathematics/recreational-mathematics/hexaflexagons-probability-paradoxes-and-tower-hanoi-martin-gardners-first-book-mathematical-puzzles-and-games?format=PB&isbn=9780521735254). 
 
 How to use the program
 ======================
 
-To run hexaflexa you need [*pycairo*](https://cairographics.org/pycairo/).
+To run hexaflexa you need python and [*pycairo*](https://cairographics.org/pycairo/).
 
 Run 
 
@@ -36,9 +36,9 @@ How to actually make the hexaflexagon
 =====================================
 
 ~~To actually fold the hexaflexagon use for instance these [instructions](http://home.xnet.com/~aak/hexahexa.html) for the *hexahexaflexagon*.~~
-These great instructions by Alejandro Kapauan unfortunately disappeared from the internet. Below is a copy of these great instructions.
+These great instructions by Alejandro Kapauan unfortunately disappeared from the internet. Below is a copy.
 
-If you read German, you can also use these very [detailed instructions](http://de.wikihow.com/Ein-Hexaflexagon-falten) with helpful animations. 
+If you read German, you can also use these very [detailed instructions](http://de.wikihow.com/Ein-Hexaflexagon-falten) with helpful animations. Make sure to use the *Methode 2* instructions for the bigger **hexahexaflexagon** and not the instructions for the smaller **trihexaflexagon**.
 
 At first you need to cut out the four different *double strips* of the print out. Next you fold the double strip in the middle and glue it together to get a single strip that can be used to fold a hexahexaflexagon with one of the instruction sets above. Every printout results in four hexaflexagon double strips to save paper and trees. 
 
