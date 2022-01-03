@@ -46,8 +46,10 @@ If you find a bug or a problem with the instructions, please send me a mail: mic
 
 
 
-Hexaflexagon background and instructions by Alejandro Kapauan
-=============================================================
+Hexaflexagon instructions by Alejandro Kapauan
+==============================================
+
+Original website: http://home.xnet.com/~aak/hexahexa.html
 
 ## Hexaflexagons
 
