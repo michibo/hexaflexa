@@ -41,7 +41,7 @@ If you read German, you can also use these very [detailed instructions](http://d
 
 At first you need to cut out the four different *double strips* of the print out. Next you fold the double strip in the middle and glue it together to get a single strip that can be used to fold a hexahexaflexagon with one of the instruction sets above. Every printout results in four hexaflexagon double strips to save paper and trees. 
 
-If you find a bug or a problem with the instructions, please send me a mail: michael.borinsky@posteo.de
+If you find a bug, a problem with the instructions or have a comment: emails or pull requests are always welcome :)
 
 
 
