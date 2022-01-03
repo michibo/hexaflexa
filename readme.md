@@ -1,6 +1,5 @@
-
-hexaflexa
-=========
+What is it?
+===========
 
 [hexaflexa](//github.com/michibo/hexaflexa) is a simple python program which makes hexaflexagon PDF printouts, such that each face of the hexaflexagon shows a different picture. 
 
