@@ -1,7 +1,7 @@
 hexaflexa
 =========
 
-[hexaflexa](//github.com/michibo/hexaflexa) is a simple python program which makes hexaflexagon PDF printouts, such that each face of the hexaflexagon shows a different picture. 
+[hexaflexa](//github.com/michibo/hexaflexa) is a simple python program which makes hexa-hexaflexagon PDF printouts, such that each face of the hexaflexagon shows a different picture. 
 
 If you don't know what a hexaflexagon is, I recommend this great [series of youtube videos by Victoria Hart](//youtu.be/VIVIegSt81k) ~~or this [website by Alejandro Kapauan](http://home.xnet.com/~aak/hexahexa.html)~~ (Alejandro Kapauan unfortunately disappeared from the internet. A copy of the content is below.) or this [book by Martin Gardner](http://www.cambridge.org/nl/academic/subjects/mathematics/recreational-mathematics/hexaflexagons-probability-paradoxes-and-tower-hanoi-martin-gardners-first-book-mathematical-puzzles-and-games?format=PB&isbn=9780521735254). 
 
